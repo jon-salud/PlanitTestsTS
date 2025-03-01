@@ -30,7 +30,7 @@ export class MainPage {
      * @throws {Error} Throws an error if the request wait fails for reasons other than a timeout.
      */
     async openMainPage(): Promise<void> {
-        const requestPromise = this.page.waitForRequest("**/*main.html*", { timeout: 3000 });
+        const requestPromise = this.page.waitForRequest("**/main.html*", { timeout: 3000 });
         await this.page.goto("/");
         await requestPromise;
 
