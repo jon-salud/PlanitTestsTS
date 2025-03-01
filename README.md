@@ -1,22 +1,18 @@
 # PlanitTestsTS
 
-This repository contains tests for the Planit application using TypeScript.
+This repository contains automated tests for the Jupiter Toys application using Playwright with TypeScript.
 
 ## Packages
 
 The following packages are used in this project:
 
-- `typescript`: For writing type-safe JavaScript.
-- `jest`: For running unit tests.
-- `ts-jest`: For using Jest with TypeScript.
-- `eslint`: For linting TypeScript code.
-- `prettier`: For code formatting.
-- `axios`: For making HTTP requests.
-- `dotenv`: For managing environment variables.
+- `@playwright/test`: For end-to-end testing
+- `allure-playwright`: For test reporting with Allure
+- `jest-allure`: For Jest integration with Allure
+- `jest-junit`: For JUnit test reporting
+- `dotenv`: For managing environment variables
 
 ## Getting Started
-
-To get started with this project, follow these steps:
 
 1. Clone the repository:
 
@@ -31,32 +27,54 @@ To get started with this project, follow these steps:
     npm install
     ```
 
-3. Run the tests:
+3. Install Playwright browsers:
 
     ```sh
-    // to run using chrome and showing the browser
-    npx playwright test --project=chromium --headed
+    npx playwright install
+    ```
 
-    // to run using firefox and not showing the browser
-    npx playwright test --project=firefox 
+4. Run the tests:
 
-    // to run using webkit and specific to a tag
-    npx playwright test --grep="@RegressionTest" --project=webkit 
+    ```sh
+    # Run tests in all browsers
+    npx playwright test
+
+    # Run tests in specific browser
+    npx playwright test --project=chromium
+    npx playwright test --project=firefox
+    npx playwright test --project=webkit
+
+    # Run tests in headed mode
+    npx playwright test --headed
+
+    # Run tests specific to a tag
+    npx playwright test --grep="@RegressionTest" 
     ```
 
 ## Project Structure
 
-- `src/`: Contains the source code for the tests.
-- `tests/`: Contains the test cases.
-- `jest.config.js`: Configuration file for Jest.
-- `tsconfig.json`: Configuration file for TypeScript.
-- `.eslintrc.js`: Configuration file for ESLint.
-- `.prettierrc`: Configuration file for Prettier.
+- `e2e/`: Contains the end-to-end test files
+- `reports/test-results/`: Contains test execution reports
+- `playwright.config.ts`: Playwright configuration
+- `.env`: Environment variables (create this file based on your needs)
 
-## Contributing
+## Test Reports
 
-Contributions are welcome! Please open an issue or submit a pull request.
+The project generates several types of reports:
+
+- HTML report
+- List report (test-results.txt)
+- JSON report (test-results.json)
+- JUnit report (junit.xml)
+- Allure report
+
+## GitHub Actions
+
+The project includes automated CI/CD using GitHub Actions, which runs tests on:
+
+- Push to main branch
+- Pull requests to main branch
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
