@@ -9,7 +9,14 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 export default defineConfig({
     testDir: "./e2e",
     outputDir: "./reports/test-results",
-    /* Run tests in files in parallel */
+    timeout: 60 * 1000,
+    expect: {
+        /**
+         * Maximum time expect() should wait for the condition to be met.
+         * For example in `await expect(locator).toHaveText();`
+         */
+        timeout: 10 * 1000,
+    } /* Run tests in files in parallel */,
     fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
@@ -37,9 +44,18 @@ export default defineConfig({
         baseURL: "https://jupiter.cloud.planittesting.com/",
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-        trace: "on-first-retry",
+        trace: "retain-on-failure",
+        screenshot: "only-on-failure",
+        video: "off",
+        // {
+        //     mode: "retain-on-failure",
+        //     size: { width: 1538, height: 731 },
+        // },
+        viewport: {
+            height: 731,
+            width: 1538,
+        },
     },
-
     /* Configure projects for major browsers */
     projects: [
         {

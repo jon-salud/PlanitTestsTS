@@ -44,6 +44,9 @@ export class ContactPage {
         const submitButtonLocator = this.page.locator(".btn-contact.btn.btn-primary").filter({ hasText: "Submit" });
         await submitButtonLocator.scrollIntoViewIfNeeded();
         await submitButtonLocator.click();
+        if (await this.page.locator(".alert").isHidden({ timeout: 2000 })) {
+            await submitButtonLocator.waitFor({ state: "hidden" });
+        }
     }
 
     /**
@@ -166,5 +169,25 @@ export class ContactPage {
         const selectorId = "#message";
         await populateField(this.page, selectorId, message);
         await expect(this.page.getByText("Message is required")).not.toBeVisible();
+    }
+
+    /**
+     * Verifies the successful submission message is displayed on the contact page.
+     * Use this method after submitting the contact form to ensure the success message is visible.
+     *
+     * @example
+     * ```typescript
+     * await contactPage.verifySuccessfulSubmissionMessage('John');
+     * ```
+     *
+     * @param {string} forename - The forename of the user, which should be included in the success message.
+     * @returns {Promise<void>} - A promise that resolves when the success message is verified to be visible.
+     * @throws {Error} - Throws an error if the success message is not visible.
+     */
+    async verifySuccessfulSubmissionMessage(forename: string): Promise<void> {
+        await this.page.getByText("Sending Feedback").waitFor({ state: "hidden" });
+        const successMessageLocator = this.page.locator(".alert.alert-success").getByText(`Thanks ${forename}, we appreciate your feedback.`);
+
+        await expect(successMessageLocator).toBeVisible({ timeout: 20000 });
     }
 }
