@@ -1,11 +1,9 @@
-// e2e\tests\test1.spec.ts
+// e2e\tests\test3.spec.ts
 
-import test from "@playwright/test";
-import { MainPage } from "../pages/mainPage";
+import test from "../fixtures/pages";
 
-test.beforeEach(async ({ page }) => {
-    const mainPage = new MainPage(page);
-    await mainPage.openMainPage();
+test.beforeEach(async ({ mainPage }) => {
+    await mainPage.goToMainPage();
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -31,7 +29,7 @@ test("Buy items", async ({ page }) => {
 
     for (const item of items) {
         for (let i = 0; i < item.quantity; i++) {
-            await test.step(`Step 2-${i+1} for ${item.product} - Add to cart ${item.quantity} times`, async () => {
+            await test.step(`Step 2-${i + 1} for ${item.product} - Add to cart ${item.quantity} times`, async () => {
                 // Populate mandatory fields
             });
         }

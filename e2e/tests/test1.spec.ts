@@ -1,9 +1,8 @@
 // e2e\tests\test1.spec.ts
 
 import test from "../fixtures/pages";
-import { MainPage } from "../pages/mainPage";
 
-test.beforeEach(async ({ mainPage, page }) => {
+test.beforeEach(async ({ mainPage }) => {
     await mainPage.goToMainPage();
 });
 
