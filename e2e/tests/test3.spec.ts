@@ -1,6 +1,7 @@
 // e2e\tests\test3.spec.ts
 
 import test from "../fixtures/pages";
+import { navigateToPage } from "../helpers/utilities";
 
 test.beforeEach(async ({ mainPage }) => {
     await mainPage.goToMainPage();
@@ -24,7 +25,8 @@ const items = [
 
 test("Buy items", { tag: "@RegressionTest" }, async ({ page }) => {
     await test.step("Step 1 - Go to Shopping Page", async () => {
-        // From the home page go to contact page
+        await navigateToPage(page, "Shop");
+        // await shopPage.ensureShopPageIsVisible();
     });
 
     for (const item of items) {

@@ -46,3 +46,22 @@ export async function populateField(page: Page, selectorId: string, value: strin
     await forenameLocator.press("Tab");
     await expect(page.locator(selectorId)).toHaveValue(value);
 }
+
+/**
+ * Navigates to a page by clicking on a menu link.
+ *
+ * @example
+ * ```typescript
+ * await navigateToPage("Contact");
+ * ```
+ *
+ * @param menuLabel - The label of the menu link to click.
+ * @returns {Promise<void>} - A promise that resolves when the navigation is complete.
+ * @throws {Error} If the menu link with the specified label is not found or the navigation fails.
+ */
+export async function navigateToPage(page: Page, menuLabel: string): Promise<void> {
+    const menuLinkLoc = getMenuLink(page, menuLabel);
+    await expect(menuLinkLoc).toBeVisible();
+    await menuLinkLoc.scrollIntoViewIfNeeded();
+    await menuLinkLoc.click();
+}

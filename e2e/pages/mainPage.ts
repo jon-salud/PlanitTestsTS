@@ -31,23 +31,4 @@ export class MainPage {
         const mainHeaderLocator = this.page.locator("h1").getByText("Jupiter Toys");
         await expect(mainHeaderLocator).toBeVisible();
     }
-
-    /**
-     * Navigates to a page by clicking on a menu link.
-     *
-     * @example
-     * ```typescript
-     * await mainPage.navigateToPage("Contact");
-     * ```
-     *
-     * @param menuLabel - The label of the menu link to click.
-     * @returns {Promise<void>} - A promise that resolves when the navigation is complete.
-     * @throws {Error} If the menu link with the specified label is not found or the navigation fails.
-     */
-    async navigateToPage(menuLabel: string): Promise<void> {
-        const menuLinkLoc = getMenuLink(this.page, menuLabel);
-        await expect(menuLinkLoc).toBeVisible();
-        await menuLinkLoc.scrollIntoViewIfNeeded();
-        await menuLinkLoc.click();
-    }
 }
