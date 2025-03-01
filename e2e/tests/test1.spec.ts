@@ -1,6 +1,7 @@
 // e2e\tests\test1.spec.ts
 
 import test from "../fixtures/pages";
+import { navigateToPage } from "../helpers/utilities";
 
 test.beforeEach(async ({ mainPage }) => {
     await mainPage.goToMainPage();
@@ -16,9 +17,9 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-test("Validate Error page", { tag: "@RegressionTest" }, async ({ page, mainPage, contactPage }) => {
+test("Validate Error page", { tag: "@RegressionTest" }, async ({ page, contactPage }) => {
     await test.step("Step 1 - Go to Contact Page", async () => {
-        await mainPage.navigateToPage("Contact");
+        await navigateToPage(page, "Contact");
         await contactPage.ensureContactPageIsVisible();
     });
 

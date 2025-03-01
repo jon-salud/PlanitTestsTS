@@ -1,6 +1,7 @@
 // e2e\tests\test2.spec.ts
 
 import test from "../fixtures/pages";
+import { navigateToPage } from "../helpers/utilities";
 
 test.beforeEach(async ({ mainPage }) => {
     await mainPage.goToMainPage();
@@ -16,10 +17,11 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-test("Validate Successful submission of message on the Contact Page", { tag: "@RegressionTest" }, async ({ page }) => {
+test("Validate Successful submission of message on the Contact Page", { tag: "@RegressionTest" }, async ({ page, contactPage }) => {
     for (let i = 0; i < 5; i++) {
         await test.step("Step 1 - Go to Contact Page", async () => {
-            // From the home page go to contact page
+            await navigateToPage(page, "Contact");
+            await contactPage.ensureContactPageIsVisible();
         });
 
         await test.step("Step 2 - Populate mandatory fields", async () => {
