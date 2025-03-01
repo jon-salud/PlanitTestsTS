@@ -16,7 +16,7 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-test("Validate Error page", async ({ page, mainPage, contactPage }) => {
+test("Validate Error page", { tag: "@RegressionTest" }, async ({ page, mainPage, contactPage }) => {
     await test.step("Step 1 - Go to Contact Page", async () => {
         await mainPage.navigateToPage("Contact");
         await contactPage.ensureContactPageIsVisible();

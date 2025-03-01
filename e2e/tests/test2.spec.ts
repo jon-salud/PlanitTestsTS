@@ -16,7 +16,7 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-test("Validate Successful submission of message on the Contact Page", async ({ page }) => {
+test("Validate Successful submission of message on the Contact Page", { tag: "@RegressionTest" }, async ({ page }) => {
     for (let i = 0; i < 5; i++) {
         await test.step("Step 1 - Go to Contact Page", async () => {
             // From the home page go to contact page

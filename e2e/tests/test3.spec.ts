@@ -22,7 +22,7 @@ const items = [
     { product: "Valentine Bear", quantity: 3 },
 ];
 
-test("Buy items", async ({ page }) => {
+test("Buy items", { tag: "@RegressionTest" }, async ({ page }) => {
     await test.step("Step 1 - Go to Shopping Page", async () => {
         // From the home page go to contact page
     });

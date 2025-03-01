@@ -34,7 +34,14 @@ To get started with this project, follow these steps:
 3. Run the tests:
 
     ```sh
-    npm test
+    // to run using chrome and showing the browser
+    npx playwright test --project=chromium --headed
+
+    // to run using firefox and not showing the browser
+    npx playwright test --project=firefox 
+
+    // to run using webkit and specific to a tag
+    npx playwright test --grep="@RegressionTest" --project=webkit 
     ```
 
 ## Project Structure
