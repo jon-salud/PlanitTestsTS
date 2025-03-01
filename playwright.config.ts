@@ -1,7 +1,7 @@
-import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,12 +20,12 @@ export default defineConfig({
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: [
         ["html", { open: "never", host: null }],
-        ["list", { outputFile: "test-results.txt" }],
-        ["json", { outputFile: "test-results.json" }],
+        ["list", { outputFile: "./reports/test-results/test-results.txt" }],
+        ["json", { outputFile: "./reports/test-results/test-results.json" }],
         [
             "jest-junit",
             {
-                outputDirectory: "my-test-results",
+                outputDirectory: "./reports/test-results",
                 outputName: "junit.xml",
             },
         ],
