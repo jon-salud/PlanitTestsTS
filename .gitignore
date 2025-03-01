@@ -2,7 +2,8 @@
 # Playwright
 node_modules/
 /test-results/
+/allure-results/
 /playwright-report/
-/blob-report/
+/reports/
 /playwright/.cache/
 .env
