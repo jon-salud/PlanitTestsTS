@@ -16,25 +16,29 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-test("Validate Error page", async ({ page, mainPage }) => {
+test("Validate Error page", async ({ page, mainPage, contactPage }) => {
     await test.step("Step 1 - Go to Contact Page", async () => {
         await mainPage.navigateToPage("Contact");
-        // await contactPage.ensureContactPageIsVisible();
+        await contactPage.ensureContactPageIsVisible();
     });
 
     await test.step("Step 2 - Click submit button", async () => {
-        // Click submit button
+        await contactPage.clickSubmitButton();
     });
 
     await test.step("Step 3 - Verify error messages", async () => {
-        // Verify error messages
+        await contactPage.verifyHeaderErrorMessage(true);
+        await contactPage.verifyFieldErrorMessage(["Forename", "Email", "Message"]);
     });
 
     await test.step("Step 4 - Populate mandatory fields", async () => {
-        // Populate mandatory fields
+        await contactPage.setForename("John");
+        await contactPage.setEmail("abc@123.com");
+        await contactPage.setMessage("This is a test message");
     });
 
     await test.step("Step 5 - Validate errors are gone", async () => {
-        // Validate errors are gone
+        await contactPage.verifyHeaderErrorMessage(false);
+        await contactPage.verifyFieldErrorMessage(["Forename", "Email", "Message"], false);
     });
 });
