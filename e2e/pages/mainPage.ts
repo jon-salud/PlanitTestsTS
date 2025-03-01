@@ -16,7 +16,7 @@ export class MainPage {
      *
      * @example
      * ```typescript
-     * await mainPage.openMainPage();
+     * await mainPage.goToMainPage();
      * ```
      *
      * @returns {Promise<void>} A promise that resolves when the main page is fully loaded and verified.
