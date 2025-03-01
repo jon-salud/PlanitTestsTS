@@ -1,7 +1,6 @@
 // tests\pages\mainPage.ts
 
 import { expect, Locator, Page } from "@playwright/test";
-import { url } from "inspector";
 
 export class MainPage {
     readonly page: Page;
