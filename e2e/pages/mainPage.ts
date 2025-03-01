@@ -1,6 +1,7 @@
 // tests\pages\mainPage.ts
 
 import { expect, Locator, Page } from "@playwright/test";
+import { getMenuLink } from "../helpers/utilities";
 
 export class MainPage {
     readonly page: Page;
@@ -10,15 +11,8 @@ export class MainPage {
     }
 
     /**
-     * Opens the main page of the application and ensures it is fully loaded before proceeding.
-     *
-     * This method performs the following steps:
-     * 1. Sets up request interception to allow all requests to continue.
-     * 2. Navigates to the root URL ("/").
-     * 3. Waits for a specific GET request to complete, ensuring the main page is loaded.
-     * 4. Handles potential timeout errors during the request wait.
-     * 5. Stops intercepting requests.
-     * 6. Verifies that the main header with the text "Jupiter Toys" is visible.
+     * Opens the main page of the application and verifies that the main header is visible.
+     * Navigates to the root URL ("/") and waits for the main header "Jupiter Toys" to be visible.
      *
      * @example
      * ```typescript
@@ -26,15 +20,34 @@ export class MainPage {
      * ```
      *
      * @returns {Promise<void>} A promise that resolves when the main page is fully loaded and verified.
-     *
      * @throws {Error} Throws an error if the request wait fails for reasons other than a timeout.
      */
-    async openMainPage(): Promise<void> {
-        const requestPromise = this.page.waitForRequest("**/main.html*", { timeout: 3000 });
+    async goToMainPage(): Promise<void> {
+        const responsePromise = this.page.waitForResponse("**/main.html*", { timeout: 3000 });
         await this.page.goto("/");
-        await requestPromise;
+        const response = await responsePromise;
+        expect(response.status()).toBe(200);
 
         const mainHeaderLocator = this.page.locator("h1").getByText("Jupiter Toys");
         await expect(mainHeaderLocator).toBeVisible();
+    }
+
+    /**
+     * Navigates to a page by clicking on a menu link.
+     *
+     * @example
+     * ```typescript
+     * await mainPage.navigateToPage("Contact");
+     * ```
+     *
+     * @param menuLabel - The label of the menu link to click.
+     * @returns {Promise<void>} - A promise that resolves when the navigation is complete.
+     * @throws {Error} If the menu link with the specified label is not found or the navigation fails.
+     */
+    async navigateToPage(menuLabel: string): Promise<void> {
+        const menuLinkLoc = getMenuLink(this.page, menuLabel);
+        await expect(menuLinkLoc).toBeVisible();
+        await menuLinkLoc.scrollIntoViewIfNeeded();
+        await menuLinkLoc.click();
     }
 }
