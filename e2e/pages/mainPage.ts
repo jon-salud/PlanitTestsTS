@@ -1,7 +1,6 @@
 // tests\pages\mainPage.ts
 
 import { expect, Locator, Page } from "@playwright/test";
-import { getMenuLink } from "../helpers/utilities";
 
 export class MainPage {
     readonly page: Page;
@@ -24,7 +23,7 @@ export class MainPage {
      */
     async goToMainPage(): Promise<void> {
         const responsePromise = this.page.waitForResponse("**/main.html*", { timeout: 3000 });
-        await this.page.goto("/");
+        await this.page.goto("/", { waitUntil: "load", timeout: 3000 });
         const response = await responsePromise;
         expect(response.status()).toBe(200);
 

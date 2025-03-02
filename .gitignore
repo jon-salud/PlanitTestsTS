@@ -1,7 +1,7 @@
 
 # Playwright
 node_modules/
-/test-results/
+/test-results*/
 /allure-results/
 /playwright-report/
 /reports/
