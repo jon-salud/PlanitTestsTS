@@ -65,3 +65,43 @@ export async function navigateToPage(page: Page, menuLabel: string): Promise<voi
     await menuLinkLoc.scrollIntoViewIfNeeded();
     await menuLinkLoc.click();
 }
+
+/**
+ * Retrieves the value from a specific column in a table row based on the product name.
+ *
+ * @example
+ * ```typescript
+ * const price = await getTheColumnValue(page, "Product 1", "Price");
+ * console.log(price); // Output: the price of "Product 1"
+ * ```
+ *
+ * @param page The Playwright Page object.
+ * @param product The name of the product in the table row.
+ * @param columnName The name of the column to retrieve the value from.
+ * @throws {Error} If the product is not found in the table.
+ * @throws {Error} If the column is not found in the table.
+ * @returns A promise that resolves to the numerical value of the specified column for the given product.
+ */
+export async function getTheColumnValue(page: Page, product: string, columnName: string): Promise<number> {
+    const productItemRowLocator = page.locator("form > table > tbody > tr").filter({ hasText: product });
+    await expect(productItemRowLocator).toBeVisible();
+
+    const productQuantityLocator = productItemRowLocator.locator("input");
+    await expect(productQuantityLocator).toBeVisible();
+
+    const headersLocator = page.locator("table > thead");
+    await expect(headersLocator).toBeVisible();
+
+    const headerItemLocators = headersLocator.locator("tr");
+    let columnValue: number = 0;
+    for (let i = 0; i < (await headerItemLocators.locator("th").count()); i++) {
+        let columnValueLocator: Locator;
+        if ((await headerItemLocators.locator(`th:nth-child(${i + 1})`).innerText()) === columnName) {
+            columnValueLocator = productItemRowLocator.locator(`td:nth-child(${i + 1})`);
+            await columnValueLocator.scrollIntoViewIfNeeded();
+            columnValue = Number((await columnValueLocator.innerText()).replace("$", ""));
+            break;
+        }
+    }
+    return columnValue;
+}
