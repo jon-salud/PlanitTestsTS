@@ -17,39 +17,55 @@ test.afterEach(async ({ page }, testInfo) => {
     await page.close();
 });
 
-const items = [
-    { product: "Stuffed Frog", quantity: 2 },
-    { product: "Fluffy Bunny", quantity: 5 },
-    { product: "Valentine Bear", quantity: 3 },
+// the unit price will be updated after adding the product to the cart
+let items = [
+    { product: "Stuffed Frog", quantity: 2, price: 0 },
+    { product: "Fluffy Bunny", quantity: 5, price: 0 },
+    { product: "Valentine Bear", quantity: 3, price: 0 },
 ];
+let total = 0;
 
-test("Buy items", { tag: "@RegressionTest" }, async ({ page }) => {
+test("Buy items", { tag: "@RegressionTest" }, async ({ page, shopPage }) => {
     await test.step("Step 1 - Go to Shopping Page", async () => {
         await navigateToPage(page, "Shop");
-        // await shopPage.ensureShopPageIsVisible();
+        await shopPage.ensureShopPageIsVisible();
     });
 
-    for (const item of items) {
-        for (let i = 0; i < item.quantity; i++) {
-            await test.step(`Step 2-${i + 1} for ${item.product} - Add to cart ${item.quantity} times`, async () => {
-                // Populate mandatory fields
-            });
+    await test.step("Step 2 - Add products to cart", async () => {
+        for (const item of items) {
+            for (let i = 0; i < item.quantity; i++) {
+                await test.step(`Step 2-${i + 1} - Add "${item.product}" to cart ${item.quantity} times`, async () => {
+                    item.price = await shopPage.addProductToCart(item.product);
+                });
+            }
         }
-    }
+    });
 
     await test.step("Step 3 - Go to Cart Page", async () => {
-        // Go to Cart Page
+        await navigateToPage(page, "Cart");
     });
 
-    await test.step("Step 4 - Verify the subtotal for each product is correct", async () => {
-        // Verify the subtotal for each product is correct
+    await test.step(`Step 4 - Verify the quantities for each product are correct`, async () => {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            await test.step(`Step 4-${i + 1} - Verify the quantity for product "${item.product}" is ${item.quantity}`, async () => {
+                total = total + (await shopPage.verifySubtotal(item.product, item.quantity, item.price));
+            });
+        }
     });
 
-    await test.step("Step 4 - Verify the price for each product", async () => {
-        // Verify the price for each product
+    await test.step(`Step 5 - Verify the prices for each product are correct`, async () => {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            for (let i = 0; i < items.length; i++) {
+                await test.step(`Step 5-${i + 1} - Verify the price for product "${item.product}" is \$${item.price}`, async () => {
+                    await shopPage.verifyPrice(item.product, item.price);
+                });
+            }
+        }
     });
 
-    await test.step("Step 4 - Verify that total = sum(sub totals)", async () => {
-        // Verify that total = sum(sub totals)
+    await test.step(`Step 6 - Verify that total = sum of the sub totals (\$${total})`, async () => {
+        await shopPage.verifyTotal(total);
     });
 });
